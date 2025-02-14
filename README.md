@@ -1,95 +1,125 @@
-# International / Localization Checklist
+# Internationalization & Localization Checklist  
 
-> 🚧 This document is under construction as far.
+> 🚧 This document is a work in progress.  
 
-There are many tedious details in the localization and internationalization of software. This checklist is intended to provide a checklist for planning reference during the software design phase. Of course, this is just an outline. Because the specifications of different countries and regions are different, the specific processing details will not be given. You only need to consider this general direction in international design.
+Internationalization (i18n) and localization (l10n) involve numerous intricate details. This checklist serves as a reference for planning during the software design phase. However, it provides only a high-level overview. Since different countries and regions have unique requirements and standards, this document does not cover specific implementation details. Instead, it highlights key considerations to keep in mind when designing for international audiences.  
 
-## Language Translation
+## Language & Translation  
 
-### Charset, encoding and alphabets
+### Character Sets, Encoding, and Alphabets  
 
-Although UTF-8 has been widely used in the mainstream world, some platforms may not support UTF-8 by default, but use their own encoding schemes, such as ISO 8859-1, GBK, Big5, etc. Have you considered this in the character processing part of your program? Does your platform support displaying the corresponding character set? Such as Latin letters, ideographic characters, Cyrillic characters, Thai letters, etc.
+Although UTF-8 is widely adopted, some platforms may not support it by default and instead use their own encoding schemes, such as ISO 8859-1, GBK, or Big5. Have you accounted for this in your application's character processing? Does your platform support displaying the required character sets, including Latin, ideographic, Cyrillic, Thai, and others?  
 
-### Transcription system
+### Transcription Systems  
 
-In some cases, some character sets may not be supported. Do you need to transcribe letters? For example, some Unix systems only support the ASCII character set and cannot display Cyrillic letters. Cyrillic letters need to be transcribed into Latin letters.
+In cases where certain character sets are unsupported, do you need a transcription system? For example, some Unix-based systems only support the ASCII character set and cannot display Cyrillic characters, requiring transliteration into Latin script.  
 
-### Dialects and area language
+### Dialects and Regional Variants  
 
-A country or region may have multiple languages ​​or dialects in use. For example, Singapore uses Chinese, English and Malay, and Hong Kong uses Cantonese and English at the same time. Have you considered this?
+A country or region may have multiple official languages or dialects. For example, Singapore recognizes English, Chinese, and Malay, while Hong Kong uses both Cantonese and English. Have you accounted for these linguistic variations?  
 
-Similarly, a language can be used in multiple regions, but there will be dialect differences. For example, the Arabic used in Saudi Arabia and the United Arab Emirates is very different, and there are also differences in spelling and pronunciation between British English, Australia English and American English.
+Additionally, a single language may have multiple regional variations. For instance, Arabic as spoken in Saudi Arabia differs significantly from that used in the United Arab Emirates. Likewise, spelling and pronunciation vary between British English, Australian English, and American English.  
 
-### Custom words
+### Localized Terminology  
 
-Some countries and regions may have their own idiomatic expressions, which need to be taken into account when translating content, otherwise it will appear abrupt or impolite. For example, the Arab region usually adds religious terms such as "Allah is great" and "Allahu Akbar" in formal texts, while Japan and South Korea need to use appropriate honorifics according to different situations.
+Certain expressions or phrases may have region-specific variations that need careful translation to avoid sounding unnatural or inappropriate. For example, in Arabic-speaking regions, formal texts often include religious phrases like "Allahu Akbar" ("Allah is great"). In Japan and South Korea, appropriate honorifics should be used based on social and contextual factors.  
 
-## UI, Layout and Typography
+## UI, Layout & Typography  
 
-### RTL & LTR
+### Right-to-Left (RTL) & Left-to-Right (LTR) Support  
 
-### Linebreaks, Layout Thrashing
+Have you ensured that your UI properly supports RTL languages such as Arabic and Hebrew?  
 
-### Input Methods & IME (Input Method Editor)
+### Line Breaking & Layout Adjustments  
 
-## UX and Interaction Design
+Different languages have different line-breaking rules. For example, Chinese and Japanese do not use spaces to separate words, while Thai requires special segmentation rules. Does your layout handle these differences correctly without causing layout thrashing?  
 
-### Shortcut Key
+### Input Methods & IMEs (Input Method Editors)  
 
-Different regions use different keyboards. Common keyboards include QWERTY, QWERTZ, and AZERTY. Even different regions use different keyboards for the same language. For example, the United States uses the standard QWERTY keyboard layout, while the United Kingdom uses the British standard layout. [See more details](https://en.wikipedia.org/wiki/Keyboard_layout).
-Different keyboard layouts mean that the number and location of keys may also be different. The design of shortcut keys needs to be carefully considered.
+Does your application support various input methods, such as on-screen keyboards and IMEs for Chinese, Japanese, and Korean text entry?  
 
-## Content and Resource
+## UX & Interaction Design  
 
-### Sorting Rules
+### Keyboard Shortcuts  
 
-Different countries and regions have different sorting rules for list items. For example, English-speaking regions usually sort by the dictionary order of the item title, while mainland China prefers to sort by the dictionary order of the pinyin of the item title, but Hong Kong uses the number of strokes and Taiwan uses the order of phonetic symbols.
-In addition, the alphabetical order of many different countries may also be different, resulting in different sorting rules, which also needs to be considered.
+Keyboard layouts vary by region. Common layouts include QWERTY, QWERTZ, and AZERTY, and even within the same language, there may be differences. For example, the U.S. uses a standard QWERTY layout, while the U.K. has a slightly different variation. [See more details](https://en.wikipedia.org/wiki/Keyboard_layout).  
 
-### Date Format, Time Zones and Daylight Saving
+When designing shortcut keys, ensure they remain accessible and intuitive across different keyboard layouts.  
 
-What date format does the region you serve use? DMY, YMD, or MDY? What are the requirements for writing months and numbers? Does it use daylight saving time?
+## Content & Resources  
 
-### Numbers, Measurements and Math Formulas
+### Sorting Rules  
 
-Different countries and regions have different numerical formats and measurement unit representations, which need to be considered.
+Sorting rules vary between regions. English-speaking countries typically use dictionary order based on item titles, while in mainland China, sorting by Pinyin is common. Hong Kong sorts by stroke count, whereas Taiwan follows Bopomofo order.  
 
-For example, the United Kingdom and the United States use a comma "," to express a thousand separator and a dot "." to express a decimal point, but Germany, France, etc. use a dot "." to express a thousand separator and a comma "," to express a decimal point. And Switzerland, France Sometimes use a space (1 000 000) as a thousands separator.
+Moreover, alphabetical orders differ across languages, affecting sorting logic. Ensure your sorting algorithm accounts for these regional differences.  
 
-Also pay attention to the number grouping. India uses the 2-2-3 grouping method. For example, 100,000 is written as 1,00,000 in India, and 1,000,000 is written as 10,00,000 in India.
+### Date Formats, Time Zones & Daylight Saving Time  
 
-### Natural Language Process
+Which date format is used in your target regions? Is it **DD/MM/YYYY**, **YYYY/MM/DD**, or **MM/DD/YYYY**?  
 
-### Audio, Video and other media
+Are month names written as numbers or spelled out? Do you need to account for daylight saving time adjustments?  
 
-Have you prepared subtitle files and translation resources for different languages? Are the translation resources for simultaneous interpretation also ready?
+### Number Formats, Measurement Units & Mathematical Conventions  
 
-### Taboo for words, symbols
+Different regions have unique numerical formatting and measurement units.  
 
-Have you considered the taboos in different countries and regions? For example, in some monarchical countries, such as Thailand and Iran, any disrespectful words to the king are prohibited. Please avoid these contents. Similarly, in the Muslim world, some animal symbols such as pigs and donkeys are also considered symbols of uncleanness.
+- The U.S. and U.K. use a comma (`1,000,000`) as a thousand separator and a dot (`1.5`) for decimals, whereas Germany and France reverse this notation (`1.000.000` and `1,5`).  
+- India groups numbers differently, using a **2-2-3** format: `10,00,000` instead of `1,000,000`.  
+- Measurement units vary: the U.S. uses inches, feet, and pounds, while most of the world follows the metric system.  
 
-Similarly, due to religious and cultural factors, some elements are considered taboo. For example, in Saudi Arabia and Yemen, Christmas elements are not allowed in products due to religious reasons.
+Ensure your application can handle these variations dynamically.  
 
-In addition, different countries and regions may have different interpretations of symbols, which needs to be taken into consideration. For example, the OK gesture 👌, although it has a positive meaning in the United Kingdom, the United States and other regions, is negative or even offensive in France, Germany and Brazil. Even the thumbs-up 👍, although it means approval in most cases, may mean sarcasm or ridicule in Greece and Latin America, so try not to use it in your products.
+### Natural Language Processing (NLP) Considerations  
 
-## Monetization & Payments
+If your application involves NLP features such as search, spell checking, or text analysis, are these adapted for different languages?  
 
-What is the smallest unit of currency in the region you serve? For example, China is 0.1 yuan and the United States is 0.01 dollar. Is there a collection plan? Are factors such as exchange rates and currency control policies taken into account? What number format is used for the amount involved? For example, China uses uppercase Chinese characters while English uses word spelling.
+### Audio, Video & Media Localization  
 
-## Performance & Optimization
+Have you prepared subtitles and translated resources for different languages? If your product supports live streaming or real-time interactions, do you provide interpretation services?  
 
-### CDN / Network Zone
+### Cultural Sensitivities & Symbolism  
 
-## Security & Access Control
+Have you accounted for cultural taboos and regional sensitivities?  
 
-## Legal & Compliance
+- In monarchies like Thailand and Iran, criticism of the royal family is strictly prohibited.  
+- In Muslim-majority countries, certain animal symbols (e.g., pigs, donkeys) are considered inappropriate.  
+- Some regions restrict religious imagery; for example, Christmas-related elements are not permitted in Saudi Arabia and Yemen.  
+- Symbols can have vastly different meanings:  
+  - The “OK” gesture (`👌`) is positive in the U.S. but offensive in France, Germany, and Brazil.  
+  - The thumbs-up sign (`👍`) may be considered sarcastic in Greece and parts of Latin America.  
 
-## Other Details
+To avoid unintended offense, research regional interpretations before including symbols in your UI.  
 
-### Accessible
+## Monetization & Payments  
 
-Different countries and regions use different Braille and sign languages. Did you take this into consideration when designing?
+What is the smallest currency unit in the target market? In China, it's 0.1 yuan, whereas in the U.S., it's 0.01 dollars.  
 
-## Reference
+Are currency exchange rates, transaction policies, and regional banking regulations accounted for?  
 
-+ [W3C Draft- i18n](https://w3c.github.io/bp-i18n-specdev/)
+How are large amounts displayed? In China, amounts may be written in uppercase Chinese characters, whereas English uses full word spelling.  
+
+## Performance & Optimization  
+
+### CDN & Network Zones  
+
+Have you optimized content delivery networks (CDNs) for different regions to ensure low-latency performance?  
+
+## Security & Access Control  
+
+Are there specific compliance or data protection laws that need to be followed, such as GDPR in Europe or PIPL in China?  
+
+## Legal & Compliance  
+
+Have you considered regional legal requirements related to software distribution, content moderation, and user privacy? For example, the European Union has very strict privacy legislation.
+
+## Accessibility & Inclusive Design  
+
+Have you accounted for accessibility standards?  
+
+- Different countries use different Braille systems and sign languages.  
+- Screen readers and assistive technologies should be tested across various locales.  
+
+## References  
+
+- [W3C Internationalization Best Practices](https://w3c.github.io/bp-i18n-specdev/)  
