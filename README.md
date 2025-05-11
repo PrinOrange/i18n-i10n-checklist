@@ -28,13 +28,19 @@ In cases where certain character sets are unsupported, do you need a transcripti
 For some languages use same character set may have different font glyphs.
 
 - Japanese Kanji and Chinese character has different glyph standard. For same character, Chinese font and Japanese font may has different displaying formals.
-- Vietnamese and English share Latin characters, but Vietnamese has tones, so the center of gravity of Vietnamese fonts is lower than that of English fonts.
+- Vietnamese and English share Latin characters, but Vietnamese has tone annotations, so the center of gravity in Vietnamese fonts is lower than that of English.
 
 ## UI, Layout & Typography  
 
 ### Right-to-Left (RTL) & Left-to-Right (LTR) Support  
 
 Have you ensured that your UI properly supports RTL languages such as Arabic and Hebrew? 
+
++ In RTL layout, the position of default button, visual direction are reverse.
++ Some animation directions are reverse, for example, progress bar, switch button and carousel slides.
++ Sequence logic are reverse. For example, the `Next` button is on left while `Previous` button is on right. And the pagination buttons are reverse too.
++ Some icons should not be reverse, like clock, handwriting icons.
++ For mathematic formulas, some Arabic region use latin-form formula while other use traditional Arabic numeral notations form, this should be reverse written, like. [See formula directions in Arabic document.](https://en.wikipedia.org/wiki/Modern_Arabic_mathematical_notation)
 
 ### Line Breaking & Layout Adjustments  
 
@@ -57,6 +63,7 @@ Sorting rules vary between regions, even though for one language.
 
 - Most of regions that uses alphabets-based language typically use alphabet-dictionary order based on item titles.
 - In mainland China, sorting by Pinyin is common. Hong Kong sorts by stroke count, whereas Taiwan follows Bopomofo order.
+- Note: some character sorting in UTF encoding are not equal to them in alphabets for some languages. For example, the Finnish letters `Å, Ä, Ö` are ranked last in the alphabet (after Z) in Swedish, Finnish, Estonian and other languages. However, the default sorting of computers (such as strcmp or JavaScript localeCompare in C) may be sorted by Unicode code points: `A, Å, Ä, B, C, ..., O, Ö, P, Q, ..., Z`
 
 Moreover, alphabetical orders differ across languages, affecting sorting logic. Ensure your sorting algorithm accounts for these regional differences.  
 
@@ -65,7 +72,7 @@ Moreover, alphabetical orders differ across languages, affecting sorting logic. 
 + **Date format:** Which date format is used in your target regions? Is it *DD/MM/YYYY*, *YYYY/MM/DD*, or *MM/DD/YYYY*? [See the distribution map of date formatting among different regions](https://en.wikipedia.org/wiki/List_of_date_formats_by_country).
 + **Time Zone:** Have you considered the time zone differences for each regions and countries? For example, the U.S. actually has six time zones, Eastern Time Zone, Central Time Zone, Mountain Time Zone, Pacific Time Zone, Alaska Time Zone, and Hawaii-Aleutian Time Zone. Here is the [details for time zone map](https://www.timeanddate.com/time/map/).
 + **Daylight saving time:** Are month names written as numbers or spelled out? Do you need to account for daylight saving time adjustments? For example, some European region and U.S. have daylight saving time.
-+ **Special Calendar:** Some countries may not use the Gregorian calendar. For example, Japan uses the era name calendar(令和/平成/昭和), and Thailand uses the Thai Solar Calendar.
++ **Special Calendar:** Some countries may not use the Gregorian calendar. For example, Japan uses the Era-Name Calendar(令和/平成/昭和), and Thailand uses the Thai Solar Calendar.
 
 ### Number Formats, Measurement Units & Mathematical Conventions  
 
@@ -74,12 +81,17 @@ Different regions have unique numerical formatting and measurement units.
 - The U.S. and U.K. use a comma (`1,000,000`) as a thousand separator and a dot (`1.5`) for decimals, whereas Germany, France and other European countries reverse this notation (`1.000.000` and `1,5`).  
 - India groups numbers differently, using a **2-2-3** format: `10,00,000` instead of `1,000,000`.  
 - Measurement units vary: the U.S. uses inches, feet, and pounds, while most of the world follows the metric system.  
+- Not every regions only use Western Arabic numerals (like $0,1,2,3,...,9$), for middle eastern regions, they prefer using traditional eastern Arabic numerals(like 0-9, their written form are separately like $٠-0,١-1,٢-2,٣-3,٤-4,٥-5,٦-6,٧-7,٨-8,٩-9$)
+- Numbering rules. For some situation the numbering rules depends on formatting rules, like chapter numbering, they prefer using Roman numerals like `Chapter Ⅰ`, `Chapter Ⅳ`.
 
 Ensure your application can handle these variations dynamically.  
 
 ### Natural Language Processing (NLP) Considerations  
 
 If your application involves NLP features such as search, spell checking, or text analysis, are these adapted for different languages?
+
++ Tokenizer design: for different language there are variant ways to process tokens and words during text indexing for search feature. Your should take intrinsic details of different languages into consideration, like stemmer, removing stopwords.
++ Declension. In i18n, it is necessary to deal with word inflection, because the same word may change depending on the context when expressing grammatical structures such as number, gender, tense, case, etc, especially in situation about string concat. If these inflections are not handled, the translated content may be grammatically incorrect, unnatural, or even difficult to understand, which will seriously affect the user experience and product professionalism.
 
 ### Audio, Video & Media Localization  
 
@@ -110,6 +122,12 @@ To avoid unintended offense, research regional interpretations before including 
 
 Have you optimized content delivery networks (CDNs) for different regions to ensure low-latency performance? Is it optimized for local networks?
 
+- Fallback Logic: Handle missing locales with graceful fallback, for example, the Mexico speaks spanish and it's supposed to load language resource `es-MX` but if there are missing such resource, you could make fallback logic, even fallback to default language: `es-MX → es → en`
+- Avoid Query Strings for Locale: Query strings may break caching. Prefer path-based routing.
+- Language-based URL Structure: Use paths like /i18n/en-US.json instead of query params for better caching.
+- Lazy Load Translations: Only load the needed language file (e.g., fr-FR.json) at runtime.
+- Font & Asset Localization: Split requests of fonts/images by language — especially for large scripts like Chinese, Japanese.
+
 ## Security & Access Control  
 
 Are there specific compliance or data protection laws that need to be followed, such as GDPR in Europe or PIPL in China?
@@ -129,10 +147,6 @@ Have you accounted for accessibility standards?
 
 - Different countries use different Braille systems and sign languages.  
 - Screen readers and assistive technologies should be tested across various locales. 
-
-## Geography
-
-
 
 ## Cultural Factor
 
